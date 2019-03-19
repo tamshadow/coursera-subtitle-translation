@@ -1,5 +1,15 @@
 {
     "manifest_version": 2,
     "name": "Coursera Subtitle Translation",
-    "version": "0.0.1"
+    "version": "0.0.1",
+    "content_scripts": [
+        {
+            "matches": [
+                "*://www.coursera.org/*"
+            ],
+            "js": [
+                "js/content.js"
+            ]
+        }
+    ]
 }
