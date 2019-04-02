@@ -11,5 +11,12 @@
                 "js/content.js"
             ]
         }
-    ]
+    ],
+    "browser_action": {},
+    "background": {
+        "scripts": [
+            "js/background.js"
+        ],
+        "persistent": false
+    }
 }
