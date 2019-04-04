@@ -1,13 +1,35 @@
 function openBilingual () {
   // 开启双语字幕
-  // 由于 Coursera 使用的是 video tag，所以直接找到节点打开对应的字幕
-  // 添加一行判定，避免非 video 页面报错
-  if (document.getElementById('c-video_html5_api')) {
-    const languages = new Set(['zh-CN', 'en'])
-    let video = document.getElementById('c-video_html5_api')
-    for (let i = 0; i < video.textTracks.length; i++) {
-      if (languages.has(video.textTracks[i].language)) {
-        video.textTracks[i].mode = 'showing'
+  let tracks = document.getElementsByTagName('track')
+  let enTrack
+  let zhcnTrack
+  if (tracks.length > 0) {
+    // 1. 遍历字幕节点，找到中英文字幕
+    for (let i = 0; i < tracks.length; i++) {
+      if (tracks[i].srclang === 'en') {
+        enTrack = tracks[i]
+      } else if (tracks[i].srclang === 'zh-CN') {
+        zhcnTrack = tracks[i]
+      }
+    }
+    // 2. 如果英文字幕存在，打开
+    if (enTrack) {
+      enTrack.track.mode = 'showing'
+      // 3. 判定中文字幕是否存在
+      // 如果存在，直接打开
+      if (zhcnTrack) {
+        zhcnTrack.track.mode = 'showing'
+      } else {
+        // 4. 如果不存在，开启翻译
+        // 遍历出英文字幕的所有文本内容，然后逐句翻译
+        // 这样会大量调用翻译 API，不大优雅，不过暂时先这样
+        cues = enTrack.track.cues
+        for (let i = 0; i < cues.length; i++) {
+          getTranslation(cues[i].text, responseText => {
+            cues[i].text = cues[i].text + '\n' + responseText
+          })
+          // break
+        }
       }
     }
   }
