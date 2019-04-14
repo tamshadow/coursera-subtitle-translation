@@ -34,7 +34,8 @@ function openBilingual () {
               cuesTextList[cuesTextList.length - 1][1].length +
               cues[i].text.length < 5000) {
             // 需要插入一个分隔符(换行)，以便之后为翻译完的字符串 split
-            cuesTextList[cuesTextList.length - 1][1] += '\n' + cues[i].text
+            // 用两个换行符来分割，因为有的视频字幕是自带换行符
+            cuesTextList[cuesTextList.length - 1][1] += '\n\n' + cues[i].text
           } else {
             cuesTextList.push([i, cues[i].text])
           }
@@ -45,7 +46,7 @@ function openBilingual () {
             // 取得返回的文本，根据之前插入的换行符 split
             // 然后确定所在 cues 文本的序列，为之前存储的起始位置 + 目前的相对位置
             // 把翻译后的文本直接添加到英文字幕后面
-            const translatedTextList = responseText.split('\n')
+            const translatedTextList = responseText.split('\n\n')
             for (let j = 0; j < translatedTextList.length; j++) {
               cues[cuesTextList[i][0] + j].text += '\n' + translatedTextList[j]
             }
