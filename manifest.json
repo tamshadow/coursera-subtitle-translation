@@ -1,22 +1,13 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Coursera Subtitle Translation",
     "version": "0.0.1",
     "content_scripts": [
         {
-            "matches": [
-                "*://www.coursera.org/*"
-            ],
-            "js": [
-                "js/content.js"
-            ]
+            "matches": ["*://www.coursera.org/*"],
+            "js": ["js/content.js"]
         }
     ],
-    "browser_action": {},
-    "background": {
-        "scripts": [
-            "js/background.js"
-        ],
-        "persistent": false
-    }
+    "action": {},
+    "background": { "service_worker": "js/background.js" }
 }
